@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
 }
 
 class _InheritedWidget extends InheritedWidget {
-  _InheritedWidget({
+  const _InheritedWidget({
     Key key,
     Widget child,
     this.data,
@@ -47,7 +47,7 @@ class _InheritedWidget extends InheritedWidget {
 }
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key, this.child}) : super(key: key);
+  const HomePage({Key key, this.child}) : super(key: key);
 
   final Widget child;
 
@@ -55,14 +55,14 @@ class HomePage extends StatefulWidget {
   HomePageState createState() => HomePageState();
 
   static HomePageState of(BuildContext context, {bool rebuild = true}) {
-    if (rebuild) {
-      return (context.inheritFromWidgetOfExactType(_InheritedWidget)
-              as _InheritedWidget)
-          .data;
-    }
-    return (context.ancestorWidgetOfExactType(_InheritedWidget)
-            as _InheritedWidget)
-        .data;
+    return rebuild
+        ? (context.inheritFromWidgetOfExactType(_InheritedWidget)
+                as _InheritedWidget)
+            .data
+        : (context
+                .ancestorInheritedElementForWidgetOfExactType(_InheritedWidget)
+                .widget as _InheritedWidget)
+            .data;
   }
 }
 
@@ -85,6 +85,7 @@ class HomePageState extends State<HomePage> {
 }
 
 class WidgetNumText extends StatelessWidget {
+  const WidgetNumText({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final HomePageState state = HomePage.of(context);
@@ -96,6 +97,7 @@ class WidgetNumText extends StatelessWidget {
 }
 
 class WidgetCenterText extends StatelessWidget {
+  const WidgetCenterText({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Text('You have pushed the button this many times:');
@@ -103,6 +105,7 @@ class WidgetCenterText extends StatelessWidget {
 }
 
 class WidgetIncrementBtn extends StatelessWidget {
+  const WidgetIncrementBtn({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final HomePageState state = HomePage.of(context, rebuild: false);
